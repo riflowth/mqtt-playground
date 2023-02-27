@@ -1,0 +1,12 @@
+version: "3.9"
+
+services:
+  mosquitto:
+    image: eclipse-mosquitto:2
+    ports:
+      - 1883:1883 # MQTT
+      - 9001:9001 # HTTP/Websocket
+    volumes:
+      - .docker/mosquitto/config/:/mosquitto/config/
+      - .docker/mosquitto/data/:/mosquitto/data/
+      - .docker/mosquitto/log/:/mosquitto/log/
