@@ -18,6 +18,7 @@ func NewMqttBroker() {
 	broker := mqtt.New(nil)
 	broker.AddHook(new(auth.AllowHook), nil)
 	broker.AddHook(new(LoggingHook), nil)
+	
 
 	tcp := listeners.NewTCP("broker", ":1883", nil)
 	if error := broker.AddListener(tcp); error != nil {
