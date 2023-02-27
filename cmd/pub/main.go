@@ -20,6 +20,10 @@ func main() {
 				Name:  "id",
 				Usage: "To define publisher id",
 			},
+			&cli.StringFlag{
+				Name:  "topic",
+				Usage: "To define topic",
+			},
 		},
 		Action: func(ctx *cli.Context) error {
 			sigs := make(chan os.Signal, 1)
@@ -30,12 +34,17 @@ func main() {
 				return errors.New("flag id is required, try --help for more information")
 			}
 
+			topic := ctx.String("topic")
+			if topic == "" {
+				return errors.New("flag topic is required, try --help for more information")
+			}
+
 			publisher, error := client.NewPublisher(id)
 			if error != nil {
 				return error
 			}
 
-			publisher.Publish("data/1", "test")
+			publisher.Publish(topic, "hello")
 
 			sig := <-sigs
 			log.Printf("caught signal (%s), stopping...", sig)
