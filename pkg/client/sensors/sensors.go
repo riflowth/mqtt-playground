@@ -2,17 +2,9 @@ package sensors
 
 import (
 	"encoding/csv"
+	"fmt"
 	"os"
-
 )
-
-type SensorData struct {
-	NodeId       string
-	Time         string
-	Humidity     string
-	Temperature  string
-	ThermalArray string
-}
 
 func NewSensors() *csv.Reader {
 	file, err := os.Open("SampleInput.csv")
@@ -25,18 +17,12 @@ func NewSensors() *csv.Reader {
 	return csvReader
 }
 
-func Read(sensors *csv.Reader) SensorData {
-	var data SensorData
-	recv, err := sensors.Read()
+func Read(sensors *csv.Reader) string {
+	data, err := sensors.Read()
 	if err != nil {
 		panic(err)
 	}
 
-	data.NodeId = recv[0]
-	data.Time = recv[1]
-	data.Humidity = recv[2]
-	data.Temperature = recv[3]
-	data.ThermalArray = recv[4]
-
-	return data
+	dataCombined := fmt.Sprintf("%v %v %v %v %v\n", data[0], data[1], data[2], data[3], data[4])
+	return dataCombined
 }
