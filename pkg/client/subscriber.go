@@ -22,10 +22,6 @@ func NewSubscriber(id string) (*Subscriber, error) {
 		return nil, token.Error()
 	}
 
-	if token := client.Subscribe("data/1", 0, nil); token.Wait() && token.Error() != nil {
-		return nil, token.Error()
-	}
-
 	return &Subscriber{client: client}, nil
 }
 

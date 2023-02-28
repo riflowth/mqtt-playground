@@ -7,7 +7,9 @@ import (
 	"os/signal"
 	"syscall"
 
+	
 	"github.com/riflowth/mqtt-lab/pkg/client"
+	// "github.com/riflowth/mqtt-lab/pkg/client/sensors"
 	"github.com/urfave/cli"
 )
 
@@ -29,6 +31,9 @@ func main() {
 			sigs := make(chan os.Signal, 1)
 			signal.Notify(sigs, syscall.SIGINT, syscall.SIGTERM)
 
+			// sensorsData := sensors.NewSensors()
+			// data := sensors.Read(sensorsData)
+
 			id := ctx.String("id")
 			if id == "" {
 				return errors.New("flag id is required, try --help for more information")
@@ -44,7 +49,7 @@ func main() {
 				return error
 			}
 
-			publisher.Publish(topic, "hello")
+			publisher.Publish(topic, "Hello World")
 
 			sig := <-sigs
 			log.Printf("caught signal (%s), stopping...", sig)
