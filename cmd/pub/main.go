@@ -7,8 +7,9 @@ import (
 	"os/signal"
 	"syscall"
 
-	
 	"github.com/riflowth/mqtt-lab/pkg/client"
+	"github.com/riflowth/mqtt-lab/pkg/client/sensors"
+
 	// "github.com/riflowth/mqtt-lab/pkg/client/sensors"
 	"github.com/urfave/cli"
 )
@@ -49,7 +50,9 @@ func main() {
 				return error
 			}
 
-			publisher.Publish(topic, "Hello World")
+			s := sensors.NewSensors()
+			d := sensors.Read(s)
+			publisher.Publish(topic, d)
 
 			sig := <-sigs
 			log.Printf("caught signal (%s), stopping...", sig)
