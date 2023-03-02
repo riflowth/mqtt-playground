@@ -71,6 +71,11 @@ func seperateByte(str string) []Chunk {
 		Seq:   i,
 		Value: str[start:],
 	})
+	chunks = append([]Chunk{{
+		Id:    id,
+		Seq:   i + 1,
+		Value: "",
+	}}, chunks...)
 
 	return chunks
 }

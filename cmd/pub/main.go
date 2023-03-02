@@ -52,6 +52,8 @@ func main() {
 
 			s := sensors.NewSensors()
 			d := sensors.Read(s)
+			c := sensors.Read(s)
+			publisher.Publish(topic, c)
 			publisher.Publish(topic, d)
 
 			sig := <-sigs
