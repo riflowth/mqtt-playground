@@ -8,6 +8,7 @@ import (
 	"syscall"
 
 	"github.com/riflowth/mqtt-lab/pkg/client"
+	"github.com/riflowth/mqtt-lab/pkg/repositories"
 	"github.com/urfave/cli/v2"
 )
 
@@ -53,8 +54,24 @@ func main() {
 				return errors.New("flag hostname is required, try --help for more information")
 			}
 
+			token := ctx.String("influx-token")
+			if token == "" {
+				return errors.New("flag token is required, try --help for more information")
+			}
+
+			org := ctx.String("influx-org")
+			if org == "" {
+				return errors.New("flag org is required, try --help for more information")
+			}
+
+			bucket := ctx.String("influx-bucket")
+			if bucket == "" {
+				return errors.New("flag bucket is required, try --help for more information")
+			}
+			sensorRepository := repositories.NewSensorRepository(token, org, bucket)
+
 			// Intialize subscriber with specific id from execution flag
-			subscriber, error := client.NewSubscriber(id, hostname)
+			subscriber, error := client.NewSubscriber(id, hostname, sensorRepository)
 			if error != nil {
 				return error
 			}

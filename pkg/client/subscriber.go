@@ -7,10 +7,12 @@ import (
 	"strings"
 
 	mqtt "github.com/eclipse/paho.mqtt.golang"
+	"github.com/riflowth/mqtt-lab/pkg/repositories"
 )
 
 type Subscriber struct {
-	client mqtt.Client
+	client           mqtt.Client
+	sensorRepository repositories.SensorRepository
 }
 
 type MessageCombiner struct {
@@ -18,23 +20,15 @@ type MessageCombiner struct {
 	messages []string
 }
 
-type SensorData struct {
-	NodeId       string
-	Time         string
-	Humidity     float64
-	Temperature  float64
-	ThermalArray string
-}
-
 var MessageMap map[string]MessageCombiner
 
 // Create new mqtt subscriber instance
-func NewSubscriber(id string, hostname string) (*Subscriber, error) {
+func NewSubscriber(id string, hostname string, sensorRepository repositories.SensorRepository) (*Subscriber, error) {
 	opts := mqtt.
 		NewClientOptions().
 		AddBroker("tcp://" + hostname).
 		SetClientID(id).
-		SetDefaultPublishHandler(onSubscribe)
+		SetDefaultPublishHandler(onSubscribe(sensorRepository))
 
 	client := mqtt.NewClient(opts)
 	if token := client.Connect(); token.Wait() && token.Error() != nil {
@@ -43,7 +37,7 @@ func NewSubscriber(id string, hostname string) (*Subscriber, error) {
 
 	MessageMap = make(map[string]MessageCombiner)
 
-	return &Subscriber{client: client}, nil
+	return &Subscriber{client: client, sensorRepository: sensorRepository}, nil
 }
 
 // Subscribe to a topic
@@ -63,47 +57,55 @@ func (subscriber *Subscriber) Unsubscribe(topic string) error {
 }
 
 // Gets called everytime broker sends message to it
-func onSubscribe(client mqtt.Client, message mqtt.Message) {
-	// log data received
-	log.Printf("recv: %s | topic: %s \n", message.Payload(), message.Topic())
+func onSubscribe(sensorRepository repositories.SensorRepository) func(client mqtt.Client, message mqtt.Message) {
+	return func(client mqtt.Client, message mqtt.Message) {
+		// log data received
+		log.Printf("recv: %s | topic: %s \n", message.Payload(), message.Topic())
 
-	// convert JSON to string
-	var payload Chunk
-	json.Unmarshal(message.Payload(), &payload)
+		// convert JSON to string
+		var payload Chunk
+		json.Unmarshal(message.Payload(), &payload)
 
-	//combine chunks of message
-	combiner, found := MessageMap[payload.Id]
-	if !found {
-		initArray := []string{}
-		for i := 0; i < payload.Seq; i++ {
-			initArray = append(initArray, string(rune(i)))
+		//combine chunks of message
+		combiner, found := MessageMap[payload.Id]
+		if !found {
+			initArray := []string{}
+			for i := 0; i < payload.Seq; i++ {
+				initArray = append(initArray, string(rune(i)))
+			}
+			MessageMap[payload.Id] = MessageCombiner{
+				seqs:     payload.Seq,
+				messages: initArray,
+			}
+		} else {
+			combiner.messages[payload.Seq] = payload.Value
 		}
-		MessageMap[payload.Id] = MessageCombiner{
-			seqs:     payload.Seq,
-			messages: initArray,
-		}
-	} else {
-		combiner.messages[payload.Seq] = payload.Value
-	}
-	//insert to db
-	if combiner.seqs-1 == payload.Seq {
-		recv := strings.Split(strings.Join(combiner.messages, ""), " ")
-		humidity, error := strconv.ParseFloat(recv[3], 64)
-		if error != nil {
-			panic(error)
-		}
-		temperature, error := strconv.ParseFloat(recv[4], 64)
-		if error != nil {
-			panic(error)
-		}
+		//insert to db
+		if combiner.seqs-1 == payload.Seq {
+			recv := strings.Split(strings.Join(combiner.messages, ""), " ")
+			humidity, error := strconv.ParseFloat(recv[3], 64)
+			if error != nil {
+				panic(error)
+			}
+			temperature, error := strconv.ParseFloat(recv[4], 64)
+			if error != nil {
+				panic(error)
+			}
 
-		data := SensorData{
-			NodeId:       recv[0],
-			Time:         recv[1] + " " + recv[2],
-			Humidity:     humidity,
-			Temperature:  temperature,
-			ThermalArray: recv[5],
+			data := repositories.SensorData{
+				NodeId:       recv[0],
+				Time:         recv[1] + " " + recv[2],
+				Humidity:     humidity,
+				Temperature:  temperature,
+				ThermalArray: recv[5],
+			}
+
+			err := sensorRepository.Save(data)
+			if err != nil {
+				panic(err)
+			}
+
+			log.Printf("Id:%v\n Time:%v\n Humidity:%v\n Temperature:%v\n ThermalArray:%v\n", data.NodeId, data.Time, data.Humidity, data.Temperature, data.ThermalArray)
 		}
-		log.Printf("Id:%v\n Time:%v\n Humidity:%v\n Temperature:%v\n ThermalArray:%v\n", data.NodeId, data.Time, data.Humidity, data.Temperature, data.ThermalArray)
 	}
 }

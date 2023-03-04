@@ -7,7 +7,7 @@ import (
 )
 
 func NewSensors() *csv.Reader {
-	file, err := os.Open("SampleInput.csv")
+	file, err := os.Open("./resource/SampleInput.csv")
 	if err != nil {
 		panic(err)
 	}
@@ -30,7 +30,7 @@ func Read(sensors *csv.Reader) string {
 func GetNumRows() int {
 
 	// open .CSV file
-	file, err := os.Open("SampleInput.csv")
+	file, err := os.Open("./resource/SampleInput.csv")
 	if err != nil {
 		panic(err)
 	}
