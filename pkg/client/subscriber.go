@@ -29,10 +29,10 @@ type SensorData struct {
 var MessageMap map[string]MessageCombiner
 
 // Create new mqtt subscriber instance
-func NewSubscriber(id string) (*Subscriber, error) {
+func NewSubscriber(id string, hostname string) (*Subscriber, error) {
 	opts := mqtt.
 		NewClientOptions().
-		AddBroker("tcp://localhost:1883").
+		AddBroker("tcp://" + hostname).
 		SetClientID(id).
 		SetDefaultPublishHandler(onSubscribe)
 

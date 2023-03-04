@@ -19,10 +19,10 @@ type Chunk struct {
 }
 
 // Create new mqtt publisher instance
-func NewPublisher(id string) (*Publisher, error) {
+func NewPublisher(id string, hostname string) (*Publisher, error) {
 	opts := mqtt.
 		NewClientOptions().
-		AddBroker("tcp://localhost:1883").
+		AddBroker("tcp://" + hostname).
 		SetClientID(id).
 		SetDefaultPublishHandler(onPublish)
 

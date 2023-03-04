@@ -26,6 +26,10 @@ func main() {
 				Name:  "topic",
 				Usage: "To define topic",
 			},
+			&cli.StringFlag{
+				Name:  "hostname",
+				Usage: "To define hostname",
+			},
 		},
 		// Define an action after execution this program
 		Action: func(ctx *cli.Context) error {
@@ -45,8 +49,14 @@ func main() {
 				return errors.New("flag topic is required, try --help for more information")
 			}
 
+			// Read host from execution flag for choosing hostname
+			hostname := ctx.String("hostname")
+			if hostname == "" {
+				return errors.New("flag hostname is required, try --help for more information")
+			}
+
 			// Initialize publisher with specific id from execution flag
-			publisher, error := client.NewPublisher(id)
+			publisher, error := client.NewPublisher(id, hostname)
 			if error != nil {
 				return error
 			}
