@@ -51,16 +51,7 @@ func main() {
 				return error
 			}
 
-			// Read sensors data and row amount of data
-			s := sensors.NewSensors()
-			rows := sensors.GetNumRows()
-
-			for i := 1; i < rows; i++ {
-				d := sensors.Read(s)
-				d = id + " " + d
-				publisher.Publish(topic, d)
-				time.Sleep(3 * time.Minute)
-			}
+			go ReadSensor(id, *publisher, topic)
 
 			// Wait for SIGINT or SIGTERM to terminate a publisher process
 			sig := <-sigs
@@ -73,5 +64,19 @@ func main() {
 	// Start application with input execution flags
 	if error := app.Run(os.Args); error != nil {
 		log.Fatalln(error)
+	}
+}
+
+// Read sensors data and row amount of data
+func ReadSensor(id string, publisher client.Publisher, topic string) {
+
+	s := sensors.NewSensors()
+	rows := sensors.GetNumRows()
+
+	for i := 1; i < rows; i++ {
+		d := sensors.Read(s)
+		d = id + " " + d
+		publisher.Publish(topic, d)
+		time.Sleep(3 * time.Minute)
 	}
 }
