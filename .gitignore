@@ -21,3 +21,5 @@ dist
 # Docker
 .docker/mosquitto/data
 .docker/mosquitto/log
+
+/.docker/volume
