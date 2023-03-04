@@ -27,28 +27,31 @@ func main() {
 				Usage: "To define topic",
 			},
 		},
+		// Define an action after execution this program
 		Action: func(ctx *cli.Context) error {
+			// Open channel to receive SIGINT or SIGTERM to terminate a process gracfully
 			sigs := make(chan os.Signal, 1)
 			signal.Notify(sigs, syscall.SIGINT, syscall.SIGTERM)
 
-			// sensorsData := sensors.NewSensors()
-			// data := sensors.Read(sensorsData)
-
+			// Read `id` from execution flag for assigning publisher id
 			id := ctx.String("id")
 			if id == "" {
 				return errors.New("flag id is required, try --help for more information")
 			}
 
+			// Read `topic` from execution flag for publishing to specific topic
 			topic := ctx.String("topic")
 			if topic == "" {
 				return errors.New("flag topic is required, try --help for more information")
 			}
 
+			// Initialize publisher with specific id from execution flag
 			publisher, error := client.NewPublisher(id)
 			if error != nil {
 				return error
 			}
 
+			// Read sensors data and row amount of data
 			s := sensors.NewSensors()
 			rows := sensors.GetNumRows()
 
@@ -58,6 +61,7 @@ func main() {
 				time.Sleep(3 * time.Minute)
 			}
 
+			// Wait for SIGINT or SIGTERM to terminate a publisher process
 			sig := <-sigs
 			log.Printf("caught signal (%s), stopping...", sig)
 
@@ -65,6 +69,7 @@ func main() {
 		},
 	}
 
+	// Start application with input execution flags
 	if error := app.Run(os.Args); error != nil {
 		log.Fatalln(error)
 	}
