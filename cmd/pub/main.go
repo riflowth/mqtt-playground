@@ -57,6 +57,7 @@ func main() {
 
 			for i := 1; i < rows; i++ {
 				d := sensors.Read(s)
+				d = id + " " + d
 				publisher.Publish(topic, d)
 				time.Sleep(3 * time.Minute)
 			}

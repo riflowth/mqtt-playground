@@ -23,7 +23,7 @@ func Read(sensors *csv.Reader) string {
 		panic(err)
 	}
 
-	dataCombined := fmt.Sprintf("%v %v %v %v %v\n", data[0], data[1], data[2], data[3], data[4])
+	dataCombined := fmt.Sprintf("%v %v %v %v\n", data[0], data[1], data[2], data[3])
 	return dataCombined
 }
 
