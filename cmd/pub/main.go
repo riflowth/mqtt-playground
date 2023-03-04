@@ -6,11 +6,10 @@ import (
 	"os"
 	"os/signal"
 	"syscall"
+	"time"
 
 	"github.com/riflowth/mqtt-lab/pkg/client"
 	"github.com/riflowth/mqtt-lab/pkg/client/sensors"
-
-	// "github.com/riflowth/mqtt-lab/pkg/client/sensors"
 	"github.com/urfave/cli"
 )
 
@@ -51,10 +50,13 @@ func main() {
 			}
 
 			s := sensors.NewSensors()
-			d := sensors.Read(s)
-			c := sensors.Read(s)
-			publisher.Publish(topic, c)
-			publisher.Publish(topic, d)
+			rows := sensors.GetNumRows()
+
+			for i := 1; i < rows; i++ {
+				d := sensors.Read(s)
+				publisher.Publish(topic, d)
+				time.Sleep(3 * time.Minute)
+			}
 
 			sig := <-sigs
 			log.Printf("caught signal (%s), stopping...", sig)
