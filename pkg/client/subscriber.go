@@ -28,6 +28,7 @@ type SensorData struct {
 
 var MessageMap map[string]MessageCombiner
 
+// Create new mqtt subscriber instance
 func NewSubscriber(id string) (*Subscriber, error) {
 	opts := mqtt.
 		NewClientOptions().
@@ -45,6 +46,7 @@ func NewSubscriber(id string) (*Subscriber, error) {
 	return &Subscriber{client: client}, nil
 }
 
+// Subscribe to a topic
 func (subscriber *Subscriber) Subscribe(topic string) error {
 	if token := subscriber.client.Subscribe(topic, 0, nil); token.Wait() && token.Error() != nil {
 		return token.Error()
@@ -52,6 +54,7 @@ func (subscriber *Subscriber) Subscribe(topic string) error {
 	return nil
 }
 
+// Unsubscribe from a topic
 func (subscriber *Subscriber) Unsubscribe(topic string) error {
 	if token := subscriber.client.Unsubscribe(topic); token.Wait() && token.Error() != nil {
 		return token.Error()
@@ -59,12 +62,16 @@ func (subscriber *Subscriber) Unsubscribe(topic string) error {
 	return nil
 }
 
+// Gets called everytime broker sends message to it
 func onSubscribe(client mqtt.Client, message mqtt.Message) {
+	// log data received
 	log.Printf("recv: %s | topic: %s \n", message.Payload(), message.Topic())
 
+	// convert JSON to string
 	var payload Chunk
 	json.Unmarshal(message.Payload(), &payload)
 
+	//combine chunks of message
 	combiner, found := MessageMap[payload.Id]
 	if !found {
 		initArray := []string{}
@@ -78,7 +85,7 @@ func onSubscribe(client mqtt.Client, message mqtt.Message) {
 	} else {
 		combiner.messages[payload.Seq] = payload.Value
 	}
-	//insert to db here
+	//insert to db
 	if combiner.seqs-1 == payload.Seq {
 		recv := strings.Split(strings.Join(combiner.messages, ""), " ")
 		humidity, error := strconv.ParseFloat(recv[3], 64)

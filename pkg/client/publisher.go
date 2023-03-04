@@ -18,6 +18,7 @@ type Chunk struct {
 	Value string
 }
 
+// Create new mqtt publisher instance
 func NewPublisher(id string) (*Publisher, error) {
 	opts := mqtt.
 		NewClientOptions().
@@ -33,9 +34,11 @@ func NewPublisher(id string) (*Publisher, error) {
 	return &Publisher{client: client}, nil
 }
 
+// publish data to a topic to broker
 func (publisher *Publisher) Publish(topic string, payload string) error {
-	chunks := seperateByte(payload)
+	chunks := separateByte(payload)
 	for _, chunk := range chunks {
+		// convert data to JSON format
 		data, error := json.Marshal(chunk)
 		log.Println(string(data))
 		if error != nil {
@@ -48,11 +51,13 @@ func (publisher *Publisher) Publish(topic string, payload string) error {
 	return nil
 }
 
+// log everytime it publishes
 func onPublish(client mqtt.Client, message mqtt.Message) {
 	log.Printf("send: %s | topic: %s\n", message.Payload(), message.Topic())
 }
 
-func seperateByte(str string) []Chunk {
+// separate read data into chunks with 250 bytes each
+func separateByte(str string) []Chunk {
 	BytePerChunk := 100
 
 	var chunks []Chunk
