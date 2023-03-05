@@ -3,9 +3,12 @@ services:
   influxdb:
     image: influxdb:2.6.1-alpine
     environment:
-      - INFLUXDB_DB=influx
-      - INFLUXDB_ADMIN_USER=admin
-      - INFLUXDB_ADMIN_PASSWORD=admin
+      DOCKER_INFLUXDB_INIT_MODE: setup
+      DOCKER_INFLUXDB_INIT_USERNAME: admin
+      DOCKER_INFLUXDB_INIT_PASSWORD: adminadmin
+      DOCKER_INFLUXDB_INIT_ORG: admin
+      DOCKER_INFLUXDB_INIT_BUCKET: mqtt
+      DOCKER_INFLUXDB_INIT_ADMIN_TOKEN: tokentoken
     ports:
       - "8086:8086"
     volumes:
@@ -18,7 +21,7 @@ services:
     links:
       - influxdb
     ports:
-      - "3000:3000"
+      - "4000:3000"
     volumes:
       - ./volume/grafana:/var/lib/grafana
     restart: always
