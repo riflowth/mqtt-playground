@@ -22,8 +22,11 @@
 cd ./.docker
 docker compose up -d
 ```
-*(grafana) http exposed at port 3000*
+*(grafana) http exposed at port 4000*
+> default username `admin` default password `admin`
+
 *(influxdb) http exposed at port 8086*
+> default username `admin` default password `adminadmin`
 
 2. Build broker/publisher/subscriber by just typing:
 ```bash
