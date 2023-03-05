@@ -1,0 +1,16 @@
+apiVersion: 1
+
+datasources:
+  - name: InfluxDBx
+    type: influxdb
+    access: proxy
+    url: http://mqtt-project-influxdb:8086
+    uid: sensor_influx
+    jsonData:
+      version: Flux
+      organization: admin
+      defaultBucket: mqtt
+
+      tlsSkipVerify: true
+    secureJsonData:
+      token: tokentoken

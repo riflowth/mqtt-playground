@@ -1,0 +1,1529 @@
+{
+    "annotations": {
+        "list": [
+            {
+                "builtIn": 1,
+                "datasource": {
+                    "type": "datasource",
+                    "uid": "grafana"
+                },
+                "enable": true,
+                "hide": true,
+                "iconColor": "rgba(0, 211, 255, 1)",
+                "name": "Annotations & Alerts",
+                "target": {
+                    "limit": 100,
+                    "matchAny": false,
+                    "tags": [],
+                    "type": "dashboard"
+                },
+                "type": "dashboard"
+            }
+        ]
+    },
+    "editable": true,
+    "fiscalYearStartMonth": 0,
+    "graphTooltip": 0,
+    "id": 2,
+    "links": [],
+    "liveNow": false,
+    "panels": [
+        {
+            "datasource": {
+                "type": "influxdb",
+                "uid": "sensor_influx"
+            },
+            "fieldConfig": {
+                "defaults": {
+                    "custom": {
+                        "hideFrom": {
+                            "legend": false,
+                            "tooltip": false,
+                            "viz": false
+                        },
+                        "scaleDistribution": {
+                            "type": "linear"
+                        }
+                    }
+                },
+                "overrides": []
+            },
+            "gridPos": {
+                "h": 4,
+                "w": 17,
+                "x": 0,
+                "y": 0
+            },
+            "id": 22,
+            "options": {
+                "calculate": false,
+                "cellGap": 1,
+                "color": {
+                    "exponent": 0.5,
+                    "fill": "dark-orange",
+                    "mode": "scheme",
+                    "reverse": false,
+                    "scale": "exponential",
+                    "scheme": "Blues",
+                    "steps": 64
+                },
+                "exemplars": {
+                    "color": "rgba(255,0,255,0.7)"
+                },
+                "filterValues": {
+                    "le": 1e-9
+                },
+                "legend": {
+                    "show": true
+                },
+                "rowsFrame": {
+                    "layout": "auto"
+                },
+                "tooltip": {
+                    "show": true,
+                    "yHistogram": false
+                },
+                "yAxis": {
+                    "axisPlacement": "hidden",
+                    "reverse": false
+                }
+            },
+            "pluginVersion": "9.4.3",
+            "targets": [
+                {
+                    "datasource": {
+                        "type": "influxdb",
+                        "uid": "sensor_influx"
+                    },
+                    "query": "from(bucket: \"mqtt\")\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"unit\"] == \"humidity\")",
+                    "refId": "A"
+                }
+            ],
+            "title": "Raw Humidity",
+            "type": "heatmap"
+        },
+        {
+            "datasource": {
+                "type": "influxdb",
+                "uid": "sensor_influx"
+            },
+            "gridPos": {
+                "h": 6,
+                "w": 7,
+                "x": 17,
+                "y": 0
+            },
+            "id": 16,
+            "options": {
+                "dedupStrategy": "none",
+                "enableLogDetails": true,
+                "prettifyLogMessage": false,
+                "showCommonLabels": false,
+                "showLabels": false,
+                "showTime": true,
+                "sortOrder": "Descending",
+                "wrapLogMessage": false
+            },
+            "pluginVersion": "9.4.3",
+            "targets": [
+                {
+                    "datasource": {
+                        "type": "influxdb",
+                        "uid": "sensor_influx"
+                    },
+                    "query": "from(bucket: \"mqtt\")\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"unit\"] == \"thermalArray\")",
+                    "refId": "A"
+                }
+            ],
+            "title": "ThermalArray Raw",
+            "type": "logs"
+        },
+        {
+            "datasource": {
+                "type": "influxdb",
+                "uid": "sensor_influx"
+            },
+            "fieldConfig": {
+                "defaults": {
+                    "custom": {
+                        "hideFrom": {
+                            "legend": false,
+                            "tooltip": false,
+                            "viz": false
+                        },
+                        "scaleDistribution": {
+                            "type": "linear"
+                        }
+                    }
+                },
+                "overrides": []
+            },
+            "gridPos": {
+                "h": 4,
+                "w": 17,
+                "x": 0,
+                "y": 4
+            },
+            "id": 12,
+            "options": {
+                "calculate": false,
+                "cellGap": 1,
+                "color": {
+                    "exponent": 0.5,
+                    "fill": "dark-orange",
+                    "mode": "scheme",
+                    "reverse": false,
+                    "scale": "exponential",
+                    "scheme": "Spectral",
+                    "steps": 67
+                },
+                "exemplars": {
+                    "color": "rgba(255,0,255,0.7)"
+                },
+                "filterValues": {
+                    "le": 1e-9
+                },
+                "legend": {
+                    "show": true
+                },
+                "rowsFrame": {
+                    "layout": "ge"
+                },
+                "tooltip": {
+                    "show": true,
+                    "yHistogram": false
+                },
+                "yAxis": {
+                    "axisPlacement": "hidden",
+                    "reverse": false,
+                    "unit": "celsius"
+                }
+            },
+            "pluginVersion": "9.4.3",
+            "targets": [
+                {
+                    "datasource": {
+                        "type": "influxdb",
+                        "uid": "sensor_influx"
+                    },
+                    "query": "from(bucket: \"mqtt\")\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"unit\"] == \"temperature\")",
+                    "refId": "A"
+                }
+            ],
+            "title": "Raw Thermal",
+            "type": "heatmap"
+        },
+        {
+            "aliasColors": {},
+            "datasource": {
+                "type": "influxdb",
+                "uid": "sensor_influx"
+            },
+            "doInit": {},
+            "format": "short",
+            "gridPos": {
+                "h": 18,
+                "w": 7,
+                "x": 17,
+                "y": 6
+            },
+            "handleMetric": {},
+            "id": 8,
+            "js_code": "const rangePercentage = (input, range_min, range_max, range_2ndMax) => {\r\n\tlet percentage = ((input - range_min) * 100) / (range_max - range_min);\r\n\r\n\tif (percentage > 100) {\r\n\t\tif (range_2ndMax !== undefined) {\r\n\t\t\tpercentage = ((range_2ndMax - input) * 100) / (range_2ndMax - range_max);\r\n\t\t\tif (percentage < 0) {\r\n\t\t\t\tpercentage = 0;\r\n\t\t\t}\r\n\r\n\t\t} else {\r\n\t\t\tpercentage = 100;\r\n\t\t}\r\n\t} else if (percentage < 0) {\r\n\t\tpercentage = 0;\r\n\t}\r\n\r\n\tconst percent = (percentage / 100)\r\n\treturn percent;\r\n}\r\n\r\nconst percentageToHsl = (percentage, hue0, hue1) => {\r\n\tconst hue = (percentage * (hue1 - hue0)) + hue0;\r\n\treturn 'hsl(' + hue + ', 100%, 50%)';\r\n}\r\n\r\nconst celsiusToColor = (celsius) => {\r\n\tconst percentage = rangePercentage(celsius, -20, 40);\r\n\tconst celsiusColor = percentageToHsl(percentage, 0.55, 0);\r\n\treturn celsiusColor;\r\n}\r\n\r\nconst run = () => {\r\n\tconst heatmapString = ctrl.data[0].datapoints.slice(-1)[0][0].replace(/\\\\n/g, '')\r\n\tconst heatmap = heatmapString.split(',')\r\n\tvar svg = Snap(svgnode);\r\n\tfor (var i = 0; i < 32; i++) {\r\n\t\tfor (var j = 0; j < 24; j++) {\r\n\t\t\tconst rect = svg.select(`#x${j}-y${i}`);\r\n\t\t\trect.attr({ \"fill\": celsiusToColor(heatmap[i * 24 + j]) });\r\n\t\t}\r\n\t}\r\n}\r\n\r\nrun();\r\n",
+            "js_init_code": "const RECT_WIDTH = 16.5;\r\nconst RECT_HEIGHT = 16.5;\r\nconst RECT_SPACEING = 2;\r\nconst RECT_COLOR = \"#000000\";\r\nconst RECT_OPACITY = 0.5;\r\n\r\nconst svg = Snap(svgnode);\r\n\r\nfor (let y = 0; y < 32; y++) {\r\n\tfor (let x = 0; x < 24; x++) {\r\n\t\tconst rectX = x * (RECT_WIDTH + RECT_SPACEING);\r\n\t\tconst rectY = y * (RECT_HEIGHT + RECT_SPACEING);\r\n\t\tconst createdRect = svg.rect(rectX, rectY, RECT_WIDTH, RECT_HEIGHT);\r\n\t\tcreatedRect.attr({\r\n\t\t\tfill: RECT_COLOR,\r\n\t\t\topacity: RECT_OPACITY,\r\n\t\t\tid: `x${x}-y${y}`\r\n\t\t});\r\n\t}\r\n}\r\n",
+            "links": [],
+            "maxDataPoints": 3,
+            "nullPointMode": "connected",
+            "repositories": {
+                "rtmaster": {
+                    "description": "simple examples",
+                    "items": [
+                        {
+                            "category": "arrows",
+                            "description": "Arrow facing up",
+                            "name": "arrow-up",
+                            "path": "rtmaster/arrows/arrow-up.svg"
+                        },
+                        {
+                            "category": "arrows",
+                            "description": "Arrow facing down",
+                            "name": "arrow-down",
+                            "path": "rtmaster/arrows/arrow-down.svg"
+                        },
+                        {
+                            "category": "arrows",
+                            "description": "Arrow facing right",
+                            "name": "arrow-right",
+                            "path": "rtmaster/arrows/arrow-right.svg"
+                        },
+                        {
+                            "category": "arrows",
+                            "description": "Arrow facing left",
+                            "name": "arrow-left",
+                            "path": "rtmaster/arrows/arrow-left.svg"
+                        },
+                        {
+                            "category": "arrows",
+                            "description": "Arrow facing up right",
+                            "name": "arrow-up-right",
+                            "path": "rtmaster/arrows/arrow-up-right.svg"
+                        },
+                        {
+                            "category": "arrows",
+                            "description": "Arrow facing up left",
+                            "name": "arrow-up-left",
+                            "path": "rtmaster/arrows/arrow-up-left.svg"
+                        },
+                        {
+                            "category": "arrows",
+                            "description": "Arrow facing down left",
+                            "name": "arrow-down-left",
+                            "path": "rtmaster/arrows/arrow-down-left.svg"
+                        },
+                        {
+                            "category": "arrows",
+                            "description": "Arrow facing down right",
+                            "name": "arrow-down-right",
+                            "path": "rtmaster/arrows/arrow-down-right.svg"
+                        },
+                        {
+                            "category": "arrows",
+                            "description": "Arrow facing left right",
+                            "name": "arrow-left-right",
+                            "path": "rtmaster/arrows/arrow-left-right.svg"
+                        },
+                        {
+                            "category": "arrows",
+                            "description": "Arrow facing up down",
+                            "name": "arrow-up-down",
+                            "path": "rtmaster/arrows/arrow-up-down.svg"
+                        },
+                        {
+                            "category": "arrows",
+                            "description": "Arrow facing up down left right",
+                            "name": "arrow-up-down-left-right",
+                            "path": "rtmaster/arrows/arrow-up-down-left-right.svg"
+                        },
+                        {
+                            "category": "facilities",
+                            "description": "Factory",
+                            "name": "factory",
+                            "path": "rtmaster/facilities/factory.svg"
+                        },
+                        {
+                            "category": "facilities",
+                            "description": "Jackup",
+                            "name": "jackup",
+                            "path": "rtmaster/facilities/jackup.svg"
+                        },
+                        {
+                            "category": "facilities",
+                            "description": "Plant",
+                            "name": "plant",
+                            "path": "rtmaster/facilities/plant.svg"
+                        },
+                        {
+                            "category": "facilities",
+                            "description": "Semisub",
+                            "name": "semisub",
+                            "path": "rtmaster/facilities/semisub.svg"
+                        },
+                        {
+                            "category": "facilities",
+                            "description": "Ship",
+                            "name": "ship",
+                            "path": "rtmaster/facilities/ship.svg"
+                        },
+                        {
+                            "category": "facilities",
+                            "description": "Truck",
+                            "name": "truck",
+                            "path": "rtmaster/facilities/truck.svg"
+                        },
+                        {
+                            "category": "indicators",
+                            "description": "Light Bulb",
+                            "name": "light-bulb",
+                            "path": "rtmaster/indicators/light-bulb.svg"
+                        },
+                        {
+                            "category": "indicators",
+                            "description": "Green Light Indicator",
+                            "name": "light-green",
+                            "path": "rtmaster/indicators/light-green.svg"
+                        },
+                        {
+                            "category": "indicators",
+                            "description": "Orange Light Indicator",
+                            "name": "light-orange",
+                            "path": "rtmaster/indicators/light-orange.svg"
+                        },
+                        {
+                            "category": "indicators",
+                            "description": "Red Light Indicator",
+                            "name": "light-red",
+                            "path": "rtmaster/indicators/light-red.svg"
+                        },
+                        {
+                            "category": "industrial",
+                            "description": "Compressor",
+                            "name": "compressor",
+                            "path": "rtmaster/industrial/compressor.svg"
+                        },
+                        {
+                            "category": "industrial",
+                            "description": "Derrick",
+                            "name": "derrick",
+                            "path": "rtmaster/industrial/derrick.svg"
+                        },
+                        {
+                            "category": "industrial",
+                            "description": "Heat Exchanger",
+                            "name": "heatexchanger",
+                            "path": "rtmaster/industrial/heatexchanger.svg"
+                        },
+                        {
+                            "category": "industrial",
+                            "description": "Motor",
+                            "name": "motor",
+                            "path": "rtmaster/industrial/motor.svg"
+                        },
+                        {
+                            "category": "industrial",
+                            "description": "Pump",
+                            "name": "pump",
+                            "path": "rtmaster/industrial/pump.svg"
+                        },
+                        {
+                            "category": "industrial",
+                            "description": "Horizontal Tank",
+                            "name": "tank-horizontal",
+                            "path": "rtmaster/industrial/tank-horizontal.svg"
+                        },
+                        {
+                            "category": "industrial",
+                            "description": "Vertical Tank",
+                            "name": "tank-vertical",
+                            "path": "rtmaster/industrial/tank-vertical.svg"
+                        },
+                        {
+                            "category": "industrial",
+                            "description": "Turbine",
+                            "name": "turbine",
+                            "path": "rtmaster/industrial/turbine.svg"
+                        },
+                        {
+                            "category": "industrial",
+                            "description": "Horizontal Vessel",
+                            "name": "vessel-horizontal",
+                            "path": "rtmaster/industrial/vessel-horizontal.svg"
+                        },
+                        {
+                            "category": "industrial",
+                            "description": "Vertical Vessel",
+                            "name": "vessel-vertical",
+                            "path": "rtmaster/industrial/vessel-vertical.svg"
+                        },
+                        {
+                            "category": "letters",
+                            "description": "A",
+                            "name": "A",
+                            "path": "rtmaster/letters/letter-a.svg"
+                        },
+                        {
+                            "category": "letters",
+                            "description": "B",
+                            "name": "B",
+                            "path": "rtmaster/letters/letter-b.svg"
+                        },
+                        {
+                            "category": "letters",
+                            "description": "C",
+                            "name": "C",
+                            "path": "rtmaster/letters/letter-c.svg"
+                        },
+                        {
+                            "category": "letters",
+                            "description": "D",
+                            "name": "D",
+                            "path": "rtmaster/letters/letter-d.svg"
+                        },
+                        {
+                            "category": "letters",
+                            "description": "E",
+                            "name": "E",
+                            "path": "rtmaster/letters/letter-e.svg"
+                        },
+                        {
+                            "category": "letters",
+                            "description": "F",
+                            "name": "F",
+                            "path": "rtmaster/letters/letter-f.svg"
+                        },
+                        {
+                            "category": "letters",
+                            "description": "G",
+                            "name": "G",
+                            "path": "rtmaster/letters/letter-g.svg"
+                        },
+                        {
+                            "category": "letters",
+                            "description": "H",
+                            "name": "H",
+                            "path": "rtmaster/letters/letter-h.svg"
+                        },
+                        {
+                            "category": "letters",
+                            "description": "I",
+                            "name": "I",
+                            "path": "rtmaster/letters/letter-i.svg"
+                        },
+                        {
+                            "category": "letters",
+                            "description": "J",
+                            "name": "J",
+                            "path": "rtmaster/letters/letter-j.svg"
+                        },
+                        {
+                            "category": "letters",
+                            "description": "K",
+                            "name": "K",
+                            "path": "rtmaster/letters/letter-k.svg"
+                        },
+                        {
+                            "category": "letters",
+                            "description": "L",
+                            "name": "L",
+                            "path": "rtmaster/letters/letter-l.svg"
+                        },
+                        {
+                            "category": "letters",
+                            "description": "M",
+                            "name": "M",
+                            "path": "rtmaster/letters/letter-m.svg"
+                        },
+                        {
+                            "category": "letters",
+                            "description": "N",
+                            "name": "N",
+                            "path": "rtmaster/letters/letter-n.svg"
+                        },
+                        {
+                            "category": "letters",
+                            "description": "O",
+                            "name": "O",
+                            "path": "rtmaster/letters/letter-o.svg"
+                        },
+                        {
+                            "category": "letters",
+                            "description": "P",
+                            "name": "P",
+                            "path": "rtmaster/letters/letter-p.svg"
+                        },
+                        {
+                            "category": "letters",
+                            "description": "Q",
+                            "name": "Q",
+                            "path": "rtmaster/letters/letter-q.svg"
+                        },
+                        {
+                            "category": "letters",
+                            "description": "R",
+                            "name": "R",
+                            "path": "rtmaster/letters-letter-r.svg"
+                        },
+                        {
+                            "category": "letters",
+                            "description": "S",
+                            "name": "S",
+                            "path": "rtmaster/letters/letter-s.svg"
+                        },
+                        {
+                            "category": "letters",
+                            "description": "T",
+                            "name": "T",
+                            "path": "rtmaster/letters/letter-t.svg"
+                        },
+                        {
+                            "category": "letters",
+                            "description": "U",
+                            "name": "U",
+                            "path": "rtmaster/letters/letter-u.svg"
+                        },
+                        {
+                            "category": "letters",
+                            "description": "V",
+                            "name": "V",
+                            "path": "rtmaster/letters/letter-v.svg"
+                        },
+                        {
+                            "category": "letters",
+                            "description": "W",
+                            "name": "W",
+                            "path": "rtmaster/letters/letter-w.svg"
+                        },
+                        {
+                            "category": "letters",
+                            "description": "X",
+                            "name": "X",
+                            "path": "rtmaster/letters/letter-x.svg"
+                        },
+                        {
+                            "category": "letters",
+                            "description": "Y",
+                            "name": "Y",
+                            "path": "rtmaster/letters/letter-y.svg"
+                        },
+                        {
+                            "category": "letters",
+                            "description": "Z",
+                            "name": "Z",
+                            "path": "rtmaster/letters/letter-z.svg"
+                        },
+                        {
+                            "category": "meters",
+                            "description": "Laboratory Flask",
+                            "name": "flask",
+                            "path": "rtmaster/meters/flask.svg"
+                        },
+                        {
+                            "category": "meters",
+                            "description": "Flowmeter",
+                            "name": "flowmeter",
+                            "path": "rtmaster/meters/flowmeter.svg"
+                        },
+                        {
+                            "category": "meters",
+                            "description": "Gauge",
+                            "name": "gauge",
+                            "path": "rtmaster/meters/gauge.svg"
+                        },
+                        {
+                            "category": "numbers",
+                            "description": "0",
+                            "name": "0",
+                            "path": "rtmaster/numbers/number-0.svg"
+                        },
+                        {
+                            "category": "numbers",
+                            "description": "1",
+                            "name": "1",
+                            "path": "rtmaster/numbers/number-1.svg"
+                        },
+                        {
+                            "category": "numbers",
+                            "description": "2",
+                            "name": "2",
+                            "path": "rtmaster/numbers/number-2.svg"
+                        },
+                        {
+                            "category": "numbers",
+                            "description": "3",
+                            "name": "3",
+                            "path": "rtmaster/numbers/number-3.svg"
+                        },
+                        {
+                            "category": "numbers",
+                            "description": "4",
+                            "name": "4",
+                            "path": "rtmaster/numbers/number-4.svg"
+                        },
+                        {
+                            "category": "numbers",
+                            "description": "5",
+                            "name": "5",
+                            "path": "rtmaster/numbers/number-5.svg"
+                        },
+                        {
+                            "category": "numbers",
+                            "description": "6",
+                            "name": "6",
+                            "path": "rtmaster/numbers/number-6.svg"
+                        },
+                        {
+                            "category": "numbers",
+                            "description": "7",
+                            "name": "7",
+                            "path": "rtmaster/numbers/number-7.svg"
+                        },
+                        {
+                            "category": "numbers",
+                            "description": "8",
+                            "name": "8",
+                            "path": "rtmaster/numbers/number-8.svg"
+                        },
+                        {
+                            "category": "numbers",
+                            "description": "9",
+                            "name": "9",
+                            "path": "rtmaster/numbers/number-9.svg"
+                        },
+                        {
+                            "category": "pipes",
+                            "description": "Pipe curve down",
+                            "name": "pipe-curve-down",
+                            "path": "rtmaster/pipes/pipe-curve-down.svg"
+                        },
+                        {
+                            "category": "pipes",
+                            "description": "Pipe curve down left",
+                            "name": "pipe-curve-down-left",
+                            "path": "rtmaster/pipes/pipe-curve-down-left.svg"
+                        },
+                        {
+                            "category": "pipes",
+                            "description": "Pipe curve down right",
+                            "name": "pipe-curve-down-right",
+                            "path": "rtmaster/pipes/pipe-curve-down-right.svg"
+                        },
+                        {
+                            "category": "pipes",
+                            "description": "Pipe curve left",
+                            "name": "pipe-curve-left",
+                            "path": "rtmaster/pipes/pipe-curve-left.svg"
+                        },
+                        {
+                            "category": "pipes",
+                            "description": "Pipe curve right",
+                            "name": "pipe-curve-right",
+                            "path": "rtmaster/pipes/pipe-curve-right.svg"
+                        },
+                        {
+                            "category": "pipes",
+                            "description": "Pipe curve up",
+                            "name": "pipe-curve-up",
+                            "path": "rtmaster/pipes/pipe-curve-up.svg"
+                        },
+                        {
+                            "category": "pipes",
+                            "description": "Pipe curve up left",
+                            "name": "pipe-curve-up-left",
+                            "path": "rtmaster/pipes/pipe-curve-up-left.svg"
+                        },
+                        {
+                            "category": "pipes",
+                            "description": "Pipe curve up right",
+                            "name": "pipe-curve-up-right",
+                            "path": "rtmaster/pipes/pipe-curve-up-right.svg"
+                        },
+                        {
+                            "category": "pipes",
+                            "description": "Pipe diagonal left",
+                            "name": "pipe-diagonal-left",
+                            "path": "rtmaster/pipes/pipe-diagonal-left.svg"
+                        },
+                        {
+                            "category": "pipes",
+                            "description": "Pipe diagonal right",
+                            "name": "pipe-diagonal-right",
+                            "path": "rtmaster/pipes/pipe-diagonal-right.svg"
+                        },
+                        {
+                            "category": "pipes",
+                            "description": "Pipe flange horizontal",
+                            "name": "pipe-flange-horizontal",
+                            "path": "rtmaster/pipes/pipe-flange-horizontal.svg"
+                        },
+                        {
+                            "category": "pipes",
+                            "description": "Pipe flange intersection",
+                            "name": "pipe-flange-intersection",
+                            "path": "rtmaster/pipes/pipe-flange-intersection.svg"
+                        },
+                        {
+                            "category": "pipes",
+                            "description": "Pipe flange vertical",
+                            "name": "pipe-flange-vertical",
+                            "path": "rtmaster/pipes/pipe-flange-vertical.svg"
+                        },
+                        {
+                            "category": "pipes",
+                            "description": "Pipe horizontal",
+                            "name": "pipe-horizontal",
+                            "path": "rtmaster/pipes/pipe-horizontal.svg"
+                        },
+                        {
+                            "category": "pipes",
+                            "description": "Pipe tee down",
+                            "name": "pipe-tee-down",
+                            "path": "rtmaster/pipes/pipe-tee-down.svg"
+                        },
+                        {
+                            "category": "pipes",
+                            "description": "Pipe tee left",
+                            "name": "pipe-tee-left",
+                            "path": "rtmaster/pipes/pipe-tee-left.svg"
+                        },
+                        {
+                            "category": "pipes",
+                            "description": "Pipe tee right",
+                            "name": "pipe-tee-right",
+                            "path": "rtmaster/pipes/pipe-tee-right.svg"
+                        },
+                        {
+                            "category": "pipes",
+                            "description": "Pipe tee up",
+                            "name": "pipe-tee-up",
+                            "path": "rtmaster/pipes/pipe-tee-up"
+                        },
+                        {
+                            "category": "pipes",
+                            "description": "Pipe vertical",
+                            "name": "pipe-vertical",
+                            "path": "rtmaster/pipes/pipe-vertical.svg"
+                        },
+                        {
+                            "category": "shapes",
+                            "description": "Circle",
+                            "name": "circle",
+                            "path": "rtmaster/shapes/circle.svg"
+                        },
+                        {
+                            "category": "shapes",
+                            "description": "Gear",
+                            "name": "gear",
+                            "path": "rtmaster/shapes/gear.svg"
+                        },
+                        {
+                            "category": "shapes",
+                            "description": "Line horizontal",
+                            "name": "line-horizontal",
+                            "path": "rtmaster/shapes/line-horizontal.svg"
+                        },
+                        {
+                            "category": "shapes",
+                            "description": "Line horizontal arrow left",
+                            "name": "line-horizontal-arrow-left",
+                            "path": "rtmaster/shapes/line-horizontal-arrow-left.svg"
+                        },
+                        {
+                            "category": "shapes",
+                            "description": "Line horizontal arrow right",
+                            "name": "line-horizontal-arrow-right",
+                            "path": "rtmaster/shapes/line-horizontal-arrow-right.svg"
+                        },
+                        {
+                            "category": "shapes",
+                            "description": "Line vertical",
+                            "name": "line-vertical",
+                            "path": "rtmaster/shapes/line-vertical.svg"
+                        },
+                        {
+                            "category": "shapes",
+                            "description": "Line vertical arrow down",
+                            "name": "line-vertical-arrow-down",
+                            "path": "rtmaster/shapes/line-vertical-arrow-down.svg"
+                        },
+                        {
+                            "category": "shapes",
+                            "description": "Line vertical arrow up",
+                            "name": "line-vertical-arrow-up",
+                            "path": "rtmaster/shapes/line-vertical-arrow-up.svg"
+                        },
+                        {
+                            "category": "shapes",
+                            "description": "Square",
+                            "name": "square",
+                            "path": "rtmaster/shapes/square.svg"
+                        },
+                        {
+                            "category": "shapes",
+                            "description": "Triangle down",
+                            "name": "triangle-down",
+                            "path": "rtmaster/shapes/triangle-down.svg"
+                        },
+                        {
+                            "category": "shapes",
+                            "description": "Triangle left",
+                            "name": "triangle-left",
+                            "path": "rtmaster/shapes/triangle-left.svg"
+                        },
+                        {
+                            "category": "shapes",
+                            "description": "Triangle right",
+                            "name": "triangle-right",
+                            "path": "rtmaster/shapes/triangle-right.svg"
+                        },
+                        {
+                            "category": "shapes",
+                            "description": "Triangle-up",
+                            "name": "triangle-up",
+                            "path": "rtmaster/shapes/triangle-up.svg"
+                        },
+                        {
+                            "category": "valves",
+                            "description": "Valve Horizontal",
+                            "name": "valve-horizontal",
+                            "path": "rtmaster/valves/valve-horizontal.svg"
+                        },
+                        {
+                            "category": "valves",
+                            "description": "Valve left right",
+                            "name": "valve-left-right",
+                            "path": "rtmaster/valves/valve-left-right.svg"
+                        },
+                        {
+                            "category": "valves",
+                            "description": "Valve round down",
+                            "name": "valve-round-down",
+                            "path": "rtmaster/valves/valve-round-down.svg"
+                        },
+                        {
+                            "category": "valves",
+                            "description": "Valve round left",
+                            "name": "valve-round-left",
+                            "path": "rtmaster/valves/valve-round-left.svg"
+                        },
+                        {
+                            "category": "valves",
+                            "description": "Valve round right",
+                            "name": "valve-round-right",
+                            "path": "rtmaster/valves/valve-round-right.svg"
+                        },
+                        {
+                            "category": "valves",
+                            "description": "Valve round up",
+                            "name": "valve-round-up",
+                            "path": "rtmaster/valves/valve-round-up.svg"
+                        },
+                        {
+                            "category": "valves",
+                            "description": "Valve square down",
+                            "name": "valve-square-down",
+                            "path": "rtmaster/valves/valve-square-down.svg"
+                        },
+                        {
+                            "category": "valves",
+                            "description": "Valve square left",
+                            "name": "valve-square-left",
+                            "path": "rtmaster/valves/valve-square-left.svg"
+                        },
+                        {
+                            "category": "valves",
+                            "description": "Valve square right",
+                            "name": "valve-square-right",
+                            "path": "rtmaster/valves/valve-square-right.svg"
+                        },
+                        {
+                            "category": "valves",
+                            "description": "Valve square up",
+                            "name": "valve-square-up",
+                            "path": "rtmaster/valves/valve-square-up.svg"
+                        },
+                        {
+                            "category": "valves",
+                            "description": "Valve vertical",
+                            "name": "valve-vertical",
+                            "path": "rtmaster/valves/valve-vertical"
+                        }
+                    ],
+                    "license": "Apache 2.0",
+                    "url": "https://github.com/rtmaster"
+                }
+            },
+            "svgBuilderData": {
+                "elements": [],
+                "height": "",
+                "viewport": {},
+                "width": ""
+            },
+            "svg_data": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"\" height=\"\" viewBox=\"null null null null\"></svg>",
+            "targets": [
+                {
+                    "alias": "",
+                    "datasource": {
+                        "type": "influxdb",
+                        "uid": "sensor_influx"
+                    },
+                    "groupBy": [
+                        {
+                            "params": [
+                                "$__interval"
+                            ],
+                            "type": "time"
+                        },
+                        {
+                            "params": [
+                                "null"
+                            ],
+                            "type": "fill"
+                        }
+                    ],
+                    "measurement": "default_test1_sensors",
+                    "orderByTime": "ASC",
+                    "policy": "default",
+                    "query": "from(bucket: \"mqtt\")\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"unit\"] == \"thermalArray\")\r\n  |> last()",
+                    "refId": "A",
+                    "resultFormat": "time_series",
+                    "select": [
+                        [
+                            {
+                                "params": [
+                                    "*"
+                                ],
+                                "type": "field"
+                            },
+                            {
+                                "params": [],
+                                "type": "mean"
+                            }
+                        ]
+                    ],
+                    "tags": []
+                }
+            ],
+            "title": "ThermalArray  Heat Map",
+            "type": "marcuscalidus-svg-panel",
+            "useSVGBuilder": true
+        },
+        {
+            "datasource": {
+                "type": "influxdb",
+                "uid": "sensor_influx"
+            },
+            "fieldConfig": {
+                "defaults": {
+                    "color": {
+                        "mode": "continuous-BlYlRd",
+                        "seriesBy": "last"
+                    },
+                    "custom": {
+                        "axisCenteredZero": false,
+                        "axisColorMode": "text",
+                        "axisLabel": "",
+                        "axisPlacement": "auto",
+                        "barAlignment": 0,
+                        "drawStyle": "bars",
+                        "fillOpacity": 20,
+                        "gradientMode": "scheme",
+                        "hideFrom": {
+                            "legend": false,
+                            "tooltip": false,
+                            "viz": false
+                        },
+                        "lineInterpolation": "smooth",
+                        "lineWidth": 3,
+                        "pointSize": 5,
+                        "scaleDistribution": {
+                            "type": "linear"
+                        },
+                        "showPoints": "auto",
+                        "spanNulls": false,
+                        "stacking": {
+                            "group": "A",
+                            "mode": "none"
+                        },
+                        "thresholdsStyle": {
+                            "mode": "off"
+                        }
+                    },
+                    "mappings": [],
+                    "thresholds": {
+                        "mode": "absolute",
+                        "steps": [
+                            {
+                                "color": "blue",
+                                "value": null
+                            },
+                            {
+                                "color": "purple",
+                                "value": 50
+                            }
+                        ]
+                    }
+                },
+                "overrides": []
+            },
+            "gridPos": {
+                "h": 6,
+                "w": 11,
+                "x": 0,
+                "y": 8
+            },
+            "id": 18,
+            "options": {
+                "legend": {
+                    "calcs": [],
+                    "displayMode": "list",
+                    "placement": "bottom",
+                    "showLegend": false
+                },
+                "tooltip": {
+                    "mode": "single",
+                    "sort": "none"
+                }
+            },
+            "targets": [
+                {
+                    "datasource": {
+                        "type": "influxdb",
+                        "uid": "sensor_influx"
+                    },
+                    "query": "from(bucket: \"mqtt\")\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"unit\"] == \"humidity\")",
+                    "refId": "A"
+                }
+            ],
+            "title": "Humidity",
+            "type": "timeseries"
+        },
+        {
+            "datasource": {
+                "type": "influxdb",
+                "uid": "sensor_influx"
+            },
+            "description": "",
+            "fieldConfig": {
+                "defaults": {
+                    "color": {
+                        "mode": "thresholds"
+                    },
+                    "mappings": [],
+                    "thresholds": {
+                        "mode": "absolute",
+                        "steps": [
+                            {
+                                "color": "green",
+                                "value": null
+                            },
+                            {
+                                "color": "red",
+                                "value": 50
+                            }
+                        ]
+                    },
+                    "unit": "celsius"
+                },
+                "overrides": []
+            },
+            "gridPos": {
+                "h": 6,
+                "w": 3,
+                "x": 11,
+                "y": 8
+            },
+            "id": 10,
+            "options": {
+                "orientation": "auto",
+                "reduceOptions": {
+                    "calcs": [
+                        "lastNotNull"
+                    ],
+                    "fields": "",
+                    "values": false
+                },
+                "showThresholdLabels": false,
+                "showThresholdMarkers": true
+            },
+            "pluginVersion": "9.4.3",
+            "targets": [
+                {
+                    "datasource": {
+                        "type": "influxdb",
+                        "uid": "sensor_influx"
+                    },
+                    "query": "from(bucket: \"mqtt\")\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"unit\"] == \"temperature\")",
+                    "refId": "A"
+                }
+            ],
+            "title": "temp",
+            "type": "gauge"
+        },
+        {
+            "datasource": {
+                "type": "influxdb",
+                "uid": "sensor_influx"
+            },
+            "fieldConfig": {
+                "defaults": {
+                    "mappings": [],
+                    "thresholds": {
+                        "mode": "percentage",
+                        "steps": [
+                            {
+                                "color": "green",
+                                "value": null
+                            },
+                            {
+                                "color": "orange",
+                                "value": 70
+                            },
+                            {
+                                "color": "red",
+                                "value": 85
+                            }
+                        ]
+                    },
+                    "unit": "congm3"
+                },
+                "overrides": []
+            },
+            "gridPos": {
+                "h": 6,
+                "w": 3,
+                "x": 14,
+                "y": 8
+            },
+            "id": 20,
+            "options": {
+                "orientation": "auto",
+                "reduceOptions": {
+                    "calcs": [
+                        "lastNotNull"
+                    ],
+                    "fields": "",
+                    "values": false
+                },
+                "showThresholdLabels": false,
+                "showThresholdMarkers": true
+            },
+            "pluginVersion": "9.4.3",
+            "targets": [
+                {
+                    "datasource": {
+                        "type": "influxdb",
+                        "uid": "sensor_influx"
+                    },
+                    "query": "from(bucket: \"mqtt\")\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"unit\"] == \"humidity\")",
+                    "refId": "A"
+                }
+            ],
+            "title": "humid",
+            "type": "gauge"
+        },
+        {
+            "datasource": {
+                "type": "influxdb",
+                "uid": "sensor_influx"
+            },
+            "fieldConfig": {
+                "defaults": {
+                    "color": {
+                        "mode": "continuous-BlYlRd"
+                    },
+                    "mappings": [],
+                    "thresholds": {
+                        "mode": "absolute",
+                        "steps": [
+                            {
+                                "color": "green",
+                                "value": null
+                            },
+                            {
+                                "color": "red",
+                                "value": 80
+                            }
+                        ]
+                    }
+                },
+                "overrides": []
+            },
+            "gridPos": {
+                "h": 2,
+                "w": 11,
+                "x": 0,
+                "y": 14
+            },
+            "id": 14,
+            "options": {
+                "displayMode": "lcd",
+                "minVizHeight": 10,
+                "minVizWidth": 0,
+                "orientation": "horizontal",
+                "reduceOptions": {
+                    "calcs": [
+                        "lastNotNull"
+                    ],
+                    "fields": "",
+                    "values": false
+                },
+                "showUnfilled": true
+            },
+            "pluginVersion": "9.4.3",
+            "targets": [
+                {
+                    "datasource": {
+                        "type": "influxdb",
+                        "uid": "sensor_influx"
+                    },
+                    "query": "from(bucket: \"mqtt\")\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"unit\"] == \"humidity\")",
+                    "refId": "A"
+                }
+            ],
+            "type": "bargauge"
+        },
+        {
+            "datasource": {
+                "type": "influxdb",
+                "uid": "sensor_influx"
+            },
+            "fieldConfig": {
+                "defaults": {
+                    "color": {
+                        "mode": "continuous-RdYlGr"
+                    },
+                    "custom": {
+                        "axisCenteredZero": false,
+                        "axisColorMode": "text",
+                        "axisLabel": "",
+                        "axisPlacement": "auto",
+                        "barAlignment": 0,
+                        "drawStyle": "line",
+                        "fillOpacity": 25,
+                        "gradientMode": "none",
+                        "hideFrom": {
+                            "legend": false,
+                            "tooltip": false,
+                            "viz": false
+                        },
+                        "lineInterpolation": "stepBefore",
+                        "lineStyle": {
+                            "fill": "solid"
+                        },
+                        "lineWidth": 1,
+                        "pointSize": 5,
+                        "scaleDistribution": {
+                            "type": "linear"
+                        },
+                        "showPoints": "auto",
+                        "spanNulls": false,
+                        "stacking": {
+                            "group": "A",
+                            "mode": "percent"
+                        },
+                        "thresholdsStyle": {
+                            "mode": "off"
+                        }
+                    },
+                    "mappings": [],
+                    "thresholds": {
+                        "mode": "absolute",
+                        "steps": [
+                            {
+                                "color": "green",
+                                "value": null
+                            },
+                            {
+                                "color": "red",
+                                "value": 80
+                            }
+                        ]
+                    }
+                },
+                "overrides": []
+            },
+            "gridPos": {
+                "h": 10,
+                "w": 6,
+                "x": 11,
+                "y": 14
+            },
+            "id": 24,
+            "options": {
+                "legend": {
+                    "calcs": [],
+                    "displayMode": "list",
+                    "placement": "bottom",
+                    "showLegend": true
+                },
+                "tooltip": {
+                    "mode": "single",
+                    "sort": "none"
+                }
+            },
+            "pluginVersion": "9.4.3",
+            "targets": [
+                {
+                    "datasource": {
+                        "type": "influxdb",
+                        "uid": "sensor_influx"
+                    },
+                    "query": "from(bucket: \"mqtt\")\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"unit\"] == \"humidity\" or r[\"unit\"] == \"temperature\")",
+                    "refId": "A"
+                }
+            ],
+            "title": "Temp x Humid",
+            "type": "timeseries"
+        },
+        {
+            "datasource": {
+                "type": "influxdb",
+                "uid": "sensor_influx"
+            },
+            "description": "",
+            "fieldConfig": {
+                "defaults": {
+                    "color": {
+                        "mode": "continuous-GrYlRd"
+                    },
+                    "mappings": [],
+                    "thresholds": {
+                        "mode": "absolute",
+                        "steps": [
+                            {
+                                "color": "green",
+                                "value": null
+                            },
+                            {
+                                "color": "red",
+                                "value": 80
+                            }
+                        ]
+                    }
+                },
+                "overrides": []
+            },
+            "gridPos": {
+                "h": 2,
+                "w": 11,
+                "x": 0,
+                "y": 16
+            },
+            "id": 26,
+            "options": {
+                "displayMode": "lcd",
+                "minVizHeight": 10,
+                "minVizWidth": 0,
+                "orientation": "horizontal",
+                "reduceOptions": {
+                    "calcs": [
+                        "lastNotNull"
+                    ],
+                    "fields": "",
+                    "values": false
+                },
+                "showUnfilled": true
+            },
+            "pluginVersion": "9.4.3",
+            "targets": [
+                {
+                    "datasource": {
+                        "type": "influxdb",
+                        "uid": "sensor_influx"
+                    },
+                    "query": "from(bucket: \"mqtt\")\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"unit\"] == \"temperature\")",
+                    "refId": "A"
+                }
+            ],
+            "type": "bargauge"
+        },
+        {
+            "datasource": {
+                "type": "influxdb",
+                "uid": "sensor_influx"
+            },
+            "fieldConfig": {
+                "defaults": {
+                    "color": {
+                        "mode": "continuous-GrYlRd"
+                    },
+                    "custom": {
+                        "axisCenteredZero": false,
+                        "axisColorMode": "text",
+                        "axisLabel": "",
+                        "axisPlacement": "auto",
+                        "barAlignment": 0,
+                        "drawStyle": "line",
+                        "fillOpacity": 20,
+                        "gradientMode": "scheme",
+                        "hideFrom": {
+                            "legend": false,
+                            "tooltip": false,
+                            "viz": false
+                        },
+                        "lineInterpolation": "smooth",
+                        "lineWidth": 3,
+                        "pointSize": 5,
+                        "scaleDistribution": {
+                            "type": "linear"
+                        },
+                        "showPoints": "auto",
+                        "spanNulls": false,
+                        "stacking": {
+                            "group": "A",
+                            "mode": "none"
+                        },
+                        "thresholdsStyle": {
+                            "mode": "off"
+                        }
+                    },
+                    "mappings": [],
+                    "thresholds": {
+                        "mode": "absolute",
+                        "steps": [
+                            {
+                                "color": "green",
+                                "value": null
+                            },
+                            {
+                                "color": "red",
+                                "value": 80
+                            }
+                        ]
+                    }
+                },
+                "overrides": []
+            },
+            "gridPos": {
+                "h": 6,
+                "w": 11,
+                "x": 0,
+                "y": 18
+            },
+            "id": 4,
+            "options": {
+                "legend": {
+                    "calcs": [],
+                    "displayMode": "list",
+                    "placement": "bottom",
+                    "showLegend": false
+                },
+                "tooltip": {
+                    "mode": "single",
+                    "sort": "none"
+                }
+            },
+            "targets": [
+                {
+                    "datasource": {
+                        "type": "influxdb",
+                        "uid": "sensor_influx"
+                    },
+                    "query": "from(bucket: \"mqtt\")\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"unit\"] == \"temperature\")",
+                    "refId": "A"
+                }
+            ],
+            "title": "Temperature",
+            "type": "timeseries"
+        }
+    ],
+    "refresh": "5s",
+    "revision": 1,
+    "schemaVersion": 38,
+    "style": "dark",
+    "tags": [],
+    "templating": {
+        "list": []
+    },
+    "time": {
+        "from": "now-5m",
+        "to": "now"
+    },
+    "timepicker": {
+        "refresh_intervals": [
+            "5s",
+            "10s",
+            "30s",
+            "1m",
+            "5m",
+            "15m",
+            "30m",
+            "1h",
+            "1d"
+        ]
+    },
+    "timezone": "",
+    "title": "mqtt",
+    "uid": "UvRoj8x4k",
+    "version": 28,
+    "weekStart": ""
+}
