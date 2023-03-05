@@ -2,6 +2,7 @@ package main
 
 import (
 	"errors"
+	"fmt"
 	"log"
 	"os"
 	"os/signal"
@@ -30,6 +31,10 @@ func main() {
 				Name:  "hostname",
 				Usage: "To define hostname",
 			},
+			&cli.StringFlag{
+				Name:  "interval",
+				Usage: "To define the interval (second) to publish message to broker",
+			},
 		},
 		// Define an action after execution this program
 		Action: func(ctx *cli.Context) error {
@@ -55,13 +60,16 @@ func main() {
 				return errors.New("flag hostname is required, try --help for more information")
 			}
 
+			interval := time.Duration(ctx.Float64("interval")) * time.Second
+			fmt.Printf("interval set to %v second", interval)
+
 			// Initialize publisher with specific id from execution flag
 			publisher, error := client.NewPublisher(id, hostname)
 			if error != nil {
 				return error
 			}
 
-			go ReadSensor(id, *publisher, topic)
+			go ReadSensor(id, *publisher, topic, interval)
 
 			// Wait for SIGINT or SIGTERM to terminate a publisher process
 			sig := <-sigs
@@ -78,7 +86,7 @@ func main() {
 }
 
 // Read sensors data and row amount of data
-func ReadSensor(id string, publisher client.Publisher, topic string) {
+func ReadSensor(id string, publisher client.Publisher, topic string, interval time.Duration) {
 
 	s := sensors.NewSensors()
 	rows := sensors.GetNumRows()
@@ -87,6 +95,6 @@ func ReadSensor(id string, publisher client.Publisher, topic string) {
 		d := sensors.Read(s)
 		d = id + " " + d
 		publisher.Publish(topic, d)
-		time.Sleep(3 * time.Minute)
+		time.Sleep(interval)
 	}
 }
