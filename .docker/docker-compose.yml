@@ -24,6 +24,8 @@ services:
       - influxdb
     ports:
       - "4000:3000"
+    environment:
+      GF_INSTALL_PLUGINS: marcuscalidus-svg-panel
     volumes:
       - ./volume/grafana:/var/lib/grafana
       - ./provisioning:/etc/grafana/provisioning
