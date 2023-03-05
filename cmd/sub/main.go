@@ -29,6 +29,18 @@ func main() {
 				Name:  "hostname",
 				Usage: "To define hostname",
 			},
+			&cli.StringFlag{
+				Name:  "influx-token",
+				Usage: "To define influx token",
+			},
+			&cli.StringFlag{
+				Name:  "influx-org",
+				Usage: "To define influx org",
+			},
+			&cli.StringFlag{
+				Name:  "influx-bucket",
+				Usage: "To define influx bucket",
+			},
 		},
 		// Define an action after execution this program
 		Action: func(ctx *cli.Context) error {
