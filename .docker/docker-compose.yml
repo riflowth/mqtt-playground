@@ -2,6 +2,7 @@ version: "3.9"
 services:
   influxdb:
     image: influxdb:2.6.1-alpine
+    container_name: mqtt-project-influxdb
     environment:
       DOCKER_INFLUXDB_INIT_MODE: setup
       DOCKER_INFLUXDB_INIT_USERNAME: admin
@@ -12,10 +13,11 @@ services:
     ports:
       - "8086:8086"
     volumes:
-      - ./volume/influxdb:/var/lib/influxdb
-    restart: always
+      - ./volume/influxdb:/var/lib/influxdb2
+
   grafana:
     image: grafana/grafana:9.4.3
+    container_name: mqtt-project-grafana
     depends_on:
       - influxdb
     links:
@@ -24,4 +26,4 @@ services:
       - "4000:3000"
     volumes:
       - ./volume/grafana:/var/lib/grafana
-    restart: always
+      - ./provisioning:/etc/grafana/provisioning
