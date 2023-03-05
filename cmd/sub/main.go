@@ -73,12 +73,13 @@ func main() {
 
 			org := ctx.String("influx-org")
 			if org == "" {
-				return errors.New("flag org is required, try --help for more information")
+				log.Println("org is not defined using default org `admin`")
 			}
 
 			bucket := ctx.String("influx-bucket")
 			if bucket == "" {
-				return errors.New("flag bucket is required, try --help for more information")
+				log.Println("bucket is not defined using default bucket `mqtt`")
+				bucket = "mqtt"
 			}
 			sensorRepository := repositories.NewSensorRepository(token, org, bucket)
 
