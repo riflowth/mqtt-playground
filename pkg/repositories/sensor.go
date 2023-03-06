@@ -21,10 +21,11 @@ type SensorRepository interface {
 }
 
 type sensorRepository struct {
-	token    string
-	org      string
-	bucket   string
-	writeAPI api.WriteAPIBlocking
+	influxHostName string
+	token          string
+	org            string
+	bucket         string
+	writeAPI       api.WriteAPIBlocking
 }
 
 func (s sensorRepository) Save(sensorData SensorData) error {
@@ -51,18 +52,20 @@ func (s sensorRepository) Save(sensorData SensorData) error {
 }
 
 func NewSensorRepository(
+	influxHostName string,
 	token string,
 	org string,
 	bucket string,
 
 ) SensorRepository {
-	client := influxdb.NewClient("http://localhost:8086", token)
+	client := influxdb.NewClient(influxHostName, token)
 	writeAPI := client.WriteAPIBlocking(org, bucket)
 
 	return &sensorRepository{
-		token:    token,
-		org:      org,
-		bucket:   bucket,
-		writeAPI: writeAPI,
+		influxHostName: influxHostName,
+		token:          token,
+		org:            org,
+		bucket:         bucket,
+		writeAPI:       writeAPI,
 	}
 }

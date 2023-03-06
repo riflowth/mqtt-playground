@@ -66,6 +66,12 @@ func main() {
 				return errors.New("flag hostname is required, try --help for more information")
 			}
 
+			influxHostName := ctx.String("influx-hostname")
+			if influxHostName == "" {
+				log.Println("influx-hostname is not defined using default hostname `http://localhost:8086`")
+				influxHostName = "http://localhost:8086"
+			}
+
 			token := ctx.String("influx-token")
 			if token == "" {
 				return errors.New("flag token is required, try --help for more information")
@@ -81,7 +87,7 @@ func main() {
 				log.Println("bucket is not defined using default bucket `mqtt`")
 				bucket = "mqtt"
 			}
-			sensorRepository := repositories.NewSensorRepository(token, org, bucket)
+			sensorRepository := repositories.NewSensorRepository(influxHostName, token, org, bucket)
 
 			// Intialize subscriber with specific id from execution flag
 			subscriber, error := client.NewSubscriber(id, hostname, sensorRepository)

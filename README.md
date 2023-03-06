@@ -46,9 +46,10 @@ make build
   - `influx-token`: token for authenticate to influxDB
   - `influx-org`: org name for influxDB
   - `influx-bucket`: bueckt name to connect to influxDB
+  - `influx-hostname` hostname to connect to influxDB
 - Example:
   ```bash
-    ./dist/sub --id sub-1 --topic hello-world --hostname localhost:1883 --influx-token "tokentoken" --influx-org admin --influx-bucket mqtt
+    ./dist/sub --id sub-1 --topic hello-world --hostname localhost:1883 --influx-token "tokentoken" --influx-org admin --influx-bucket mqtt --influx-hostname http://localhost:8086
   ```
 
 5. Run publisher:
