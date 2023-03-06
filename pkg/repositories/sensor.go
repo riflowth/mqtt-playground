@@ -33,16 +33,19 @@ func (s sensorRepository) Save(sensorData SensorData) error {
 
 	tempPoint := influxdb.NewPointWithMeasurement("stat").
 		AddTag("unit", "temperature").
+		AddField("nodeId", sensorData.NodeId).
 		AddField("value", sensorData.Temperature).
 		SetTime(time)
 
 	humPoint := influxdb.NewPointWithMeasurement("stat").
 		AddTag("unit", "humidity").
+		AddField("nodeId", sensorData.NodeId).
 		AddField("value", sensorData.Humidity).
 		SetTime(time)
 
 	thermalPoint := influxdb.NewPointWithMeasurement("stat").
 		AddTag("unit", "thermalArray").
+		AddField("nodeId", sensorData.NodeId).
 		AddField("array", sensorData.ThermalArray).
 		SetTime(time)
 
