@@ -34,11 +34,13 @@ make build
 ```
 
 3. Run broker from built output directory:
+- Required flags:
+  - `port`: port of broker to exposed
 ```bash
-./dist/broker
+./dist/broker --port 1883
 ```
 
-4. Run subscriber:
+1. Run subscriber:
 - Required flags:
   - `id`: unique id to identify the subscriber
   - `topic`: topic to subscribe
@@ -52,7 +54,7 @@ make build
     ./dist/sub --id sub-1 --topic hello-world --hostname localhost:1883 --influx-token "tokentoken" --influx-org admin --influx-bucket mqtt --influx-hostname http://localhost:8086
   ```
 
-5. Run publisher:
+1. Run publisher:
 - Required flags:
   - `id`: unique id to identify the publisher
   - `topic`: topic to publish
@@ -63,7 +65,7 @@ make build
     ./dist/pub --id pub-1 --topic hello-world --hostname localhost:1883 --interval 180
   ```
 
-6. *Chill with your coffee* ☕️
+1. *Chill with your coffee* ☕️
 
 ## Preview
 ### Dashboard

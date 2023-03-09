@@ -1,6 +1,7 @@
 package broker
 
 import (
+	"fmt"
 	"log"
 	"os"
 	"os/signal"
@@ -11,7 +12,7 @@ import (
 	"github.com/mochi-co/mqtt/v2/listeners"
 )
 
-func NewMqttBroker() {
+func NewMqttBroker(port string) {
 	// Open channel to receive SIGINT or SIGTERM to terminate a process gracfully
 	sigs := make(chan os.Signal, 1)
 	signal.Notify(sigs, syscall.SIGINT, syscall.SIGTERM)
@@ -23,8 +24,8 @@ func NewMqttBroker() {
 	// Add mochi-co broker custom logging hook to log every behavior we want
 	broker.AddHook(new(LoggingHook), nil)
 
-	// Create TCP listener to bind to mochi-co broker with port 1883
-	tcp := listeners.NewTCP("broker", ":1883", nil)
+	// Create TCP listener to bind to mochi-co broker with port that user defined (default: 1883)
+	tcp := listeners.NewTCP("broker", fmt.Sprintf(":%s", port), nil)
 	if error := broker.AddListener(tcp); error != nil {
 		log.Fatalln(error)
 	}
